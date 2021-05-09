@@ -62,11 +62,11 @@ const handleScaleY = (keyframes, lottieObject, lottie) => {
         const nullParent = new LottieNull();
         nullParent.id = LottieLayer.ids++;
         nullParent.transform = lottieObject.transform;
-        nullParent.parent = lottieObject.parent;
+        nullParent.parentId = lottieObject.parentId;
         const objectTransform = new LottieTransform();
         lottie.addLayer(nullParent);
         lottieProperty = objectTransform.scale;
-        lottieObject.parent = nullParent.id;
+        lottieObject.parentId = nullParent.id;
         lottieObject.transform = objectTransform;
     }
     const multiplier = math.toHundred;

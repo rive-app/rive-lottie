@@ -238,7 +238,7 @@ const splitPaints = (lottieShape) => {
 
 const shapeFactory = (shape, parentId) => {
     const lottieShape = new LottieShape(shape.id);
-    lottieShape.parent = parentId;
+    lottieShape.parentId = parentId;
     let lottieGroup = createShapeGroup();
     lottieGroup.name = shape.name;
     lottieShape.addShape(lottieGroup);

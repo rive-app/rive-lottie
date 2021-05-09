@@ -4,7 +4,7 @@ class LottieLayer {
 
     constructor(id) {
         this._id = id;
-        this._parent = undefined;
+        this._parentId = undefined;
         this._type = this.constructor.name;
     }
 
@@ -16,12 +16,12 @@ class LottieLayer {
         return this._type;
     }
 
-    get parent() {
-        return this._parent;
+    get parentId() {
+        return this._parentId;
     }
 
-    set parent(val) {
-        this._parent = val;
+    set parentId(val) {
+        this._parentId = val;
     }
 
     get id() {
@@ -49,7 +49,7 @@ class LottieLayer {
             sr: 1,
             bm: 0,
             ind: this._id,
-            parent: this._parent,
+            parent: this._parentId,
         }
     }
 

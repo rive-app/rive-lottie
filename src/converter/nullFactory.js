@@ -10,7 +10,7 @@ const layerTypes = {
 
 const nullFactory = (nullElement, parentId) => {
     const lottieObject = new LottieNull(nullElement.id);
-    lottieObject.parent = parentId;
+    lottieObject.parentId = parentId;
     layerProperties(lottieObject, nullElement);
     const children = nullElement.children.map(child => createLayersFromElement(child, lottieObject.id));
     return [lottieObject, children.flat()].flat();

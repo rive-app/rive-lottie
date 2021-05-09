@@ -14,6 +14,14 @@ class LinearAnimation extends Animation {
         return this._duration;
     }
 
+    get workStart() {
+        return this._workStart;
+    }
+
+    get workEnd() {
+        return this._workEnd;
+    }
+
     addObject(keyedObject) {
         this._objects.push(keyedObject);
     }

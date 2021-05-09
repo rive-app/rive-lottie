@@ -26,7 +26,12 @@ const createLottieAnimations = artboard => {
         let lottieAnimation = new LottieAnimation(artboard.width, artboard.height);
         if (artboard.animations[i]) {
             lottieAnimation.frameRate = artboard.animations[i].fps;
-            lottieAnimation.outPoint = artboard.animations[i].duration;
+            if (artboard.animations[i].workStart !== -1) {
+                lottieAnimation.inPoint = artboard.animations[i].workStart;
+            }
+            lottieAnimation.outPoint = artboard.animations[i].workEnd === -1
+                ? artboard.animations[i].duration
+                : artboard.animations[i].workEnd;
         }
         animations.push(lottieAnimation);
     }

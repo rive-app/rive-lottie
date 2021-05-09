@@ -13,6 +13,10 @@ class LottieAnimation {
         this._frameRate = value;
     }
 
+    set inPoint(value) {
+        this._inPoint = value;
+    }
+
     set outPoint(value) {
         this._outPoint = value;
     }

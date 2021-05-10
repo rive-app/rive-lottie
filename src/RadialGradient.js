@@ -1,4 +1,4 @@
-const LinearGradient = require("./LinearGradient");
+const LinearGradient = require('./LinearGradient');
 
 class RadialGradient extends LinearGradient {
 

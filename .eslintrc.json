@@ -1,3 +1,7 @@
 {
-    "extends": "airbnb-base"
+    "extends": "airbnb-base",
+    "rules": {
+        "no-bitwise": "off",
+        "no-underscore-dangle": "off"
+    }
 }

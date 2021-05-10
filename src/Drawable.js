@@ -8,7 +8,7 @@ class Drawable extends Node {
     }
 
     _setBlendModeValue(reader) {
-        this._blendModeValue = reader.readUint8();
+        this._blendModeValue = reader.readVarUint();
     }
 
     _registerPropertyHandlers() {

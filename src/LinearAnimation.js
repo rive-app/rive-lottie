@@ -1,4 +1,5 @@
-const Animation = require('./Animation')
+const Animation = require('./Animation');
+const bool = require('./helpers/boolean');
 
 class LinearAnimation extends Animation {
 
@@ -43,11 +44,11 @@ class LinearAnimation extends Animation {
     }
 
     _setFPS(reader) {
-        this._fps = reader.readUint8();
+        this._fps = reader.readVarUint();
     }
 
     _setDuration(reader) {
-        this._duration = reader.readUint8();
+        this._duration = reader.readVarUint();
     }
 
     _setSpeed(reader) {
@@ -55,18 +56,19 @@ class LinearAnimation extends Animation {
     }
 
     _setLoopValue(reader) {
-        this._loopValue = reader.readUint8();
+        this._loopValue = reader.readVarUint();
     }
 
     _setWorkStart(reader) {
-        this._workStart = reader.readUint8();
+        this._workStart = reader.readVarUint();
     }
 
     _setWorkEnd(reader) {
-        this._workEnd = reader.readUint8();
+        this._workEnd = reader.readVarUint();
     }
 
     _setEnableWorkArea(reader) {
+        this._enableWorkArea = bool(reader);
         // TODO implement with readByte
     }
 

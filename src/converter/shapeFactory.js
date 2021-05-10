@@ -11,6 +11,7 @@ const LottieShapePath = require('./LottieShapePath');
 const shapeTypes = {
     RECTANGLE: 'Rectangle',
     ELLIPSE: 'Ellipse',
+    POLYGON: 'Polygon',
     FILL: 'Fill',
     STROKE: 'Stroke',
     SHAPE: 'Shape',

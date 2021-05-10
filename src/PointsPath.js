@@ -1,9 +1,10 @@
 const Path = require('./Path');
+const bool = require('./helpers/boolean');
 
 class PointsPath extends Path {
 
     _setIsClosed(reader) {
-        this._isClosed = reader.readUint8() === 1;
+        this._isClosed = bool(reader);
     }
 
     get isClosed() {

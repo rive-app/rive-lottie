@@ -16,7 +16,7 @@ class TrimPath extends Component {
     }
 
     _setModeValue(reader) {
-        this._modeValue = reader.readUint8();
+        this._modeValue = reader.readVarUint();
     }
 
     _registerPropertyHandlers() {

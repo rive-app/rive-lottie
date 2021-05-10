@@ -8,7 +8,7 @@ class Fill extends ShapePaint {
     }
 
     _setFillRule(reader) {
-        this._fillRule = reader.readUint8();
+        this._fillRule = reader.readVarUint();
     }
 
     _registerPropertyHandlers() {

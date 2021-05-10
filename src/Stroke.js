@@ -1,4 +1,5 @@
 const ShapePaint = require('./ShapePaint');
+const bool = require('./helpers/boolean');
 
 class Stroke extends ShapePaint {
 
@@ -27,15 +28,15 @@ class Stroke extends ShapePaint {
     }
 
     _setCap(reader) {
-        this._cap = reader.readUint8();
+        this._cap = reader.readVarUint();
     }
 
     _setJoin(reader) {
-        this._join = reader.readUint8();
+        this._join = reader.readVarUint();
     }
 
     _setTransformAffectsStroke(reader) {
-        this._transformAffectsStroke = reader.readUint8() === 1;
+        this._transformAffectsStroke = bool(reader);
     }
 
     _registerPropertyHandlers() {

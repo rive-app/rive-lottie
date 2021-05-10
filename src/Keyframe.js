@@ -39,15 +39,15 @@ class Keyframe extends RiveObject {
     }
 
     _setFrame(reader) {
-        this._frame = reader.readUint8();
+        this._frame = reader.readVarUint();
     }
 
     _setInterpolationType(reader) {
-        this._interpolationType = reader.readUint8();
+        this._interpolationType = reader.readVarUint();
     }
 
     _setInterpolatorId(reader) {
-        this._interpolatorId = reader.readUint8();
+        this._interpolatorId = reader.readVarUint();
     }
 
     _registerPropertyHandlers() {

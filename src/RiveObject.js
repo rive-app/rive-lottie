@@ -12,6 +12,7 @@ class RiveObject extends Object {
     _iterateProperties(reader) {
         while (!reader.isEOF()) {
             const value = reader.readVarUint();
+            // console.log('value', value);
             if (value === 0) {
                 break;
             } else if (this._properties[value]) {

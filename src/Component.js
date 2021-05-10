@@ -55,7 +55,7 @@ class Component extends RiveObject {
     }
 
     _setParentId(reader) {
-        this._parentId = reader.readUint8();
+        this._parentId = reader.readVarUint();
     }
 
     _setChildOrder(reader) {

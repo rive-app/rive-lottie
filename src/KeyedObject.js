@@ -25,7 +25,7 @@ class KeyedObject extends RiveObject {
     }
 
     _setId(reader) {
-        this._id = reader.readUint8();
+        this._id = reader.readVarUint();
     }
 
     _registerPropertyHandlers() {

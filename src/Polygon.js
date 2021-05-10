@@ -8,7 +8,7 @@ class Polygon extends ParametricPath {
     }
 
     _setPoints(reader) {
-        this._points = reader.readUint8();
+        this._points = reader.readVarUint();
     }
 
     _setCornerRadius(reader) {

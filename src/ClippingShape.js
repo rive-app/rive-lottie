@@ -1,17 +1,18 @@
 const Component = require('./Component');
+const bool = require('./helpers/boolean')
 
 class ClippingShape extends Component {
 
     _setSourceId(reader) {
-        this._sourceId = reader.readUint8();
+        this._sourceId = reader.readVarUint();
     }
 
     _setFillRule(reader) {
-        this._fillRule = reader.readUint8();
+        this._fillRule = reader.readVarUint();
     }
 
     _setIsVisible(reader) {
-        this._isVisible = reader.readUint8() === 1;
+        this._isVisible = bool(reader);
     }
 
     _registerPropertyHandlers() {

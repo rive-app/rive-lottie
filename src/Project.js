@@ -3,6 +3,7 @@ var Backboard = require('./Backboard');
 var Node = require('./Node');
 var Shape = require('./Shape');
 var Ellipse = require('./Ellipse');
+var Polygon = require('./Polygon');
 var Fill = require('./Fill');
 var SolidColor = require('./SolidColor');
 const LinearAnimation = require('./LinearAnimation');
@@ -69,6 +70,11 @@ class Project {
     _createEllipse = (reader) => {
         const ellipse = Object.seal(new Ellipse(reader));
         this.lastObjects.artboard.addChild(ellipse);
+    }
+
+    _createPolygon = (reader) => {
+        const polygon = Object.seal(new Polygon(reader));
+        this.lastObjects.artboard.addChild(polygon);
     }
 
     _createStraightVertex = (reader) => {
@@ -206,6 +212,7 @@ class Project {
         37: this._createKeyframeColor,
         42: this._createClippingShape,
         47: this._createTrimPath,
+        51: this._createPolygon,
         52: this._createStar,
     }
 

@@ -163,7 +163,8 @@ const iterateChildren = (children, lottieGroup) => {
             shapeChild
             .filter(shape => shape)
             .forEach(shape => {
-                lottieGroup.addShape(shape);
+                const lastIndex = lottieGroup.getLastIndexType(Object.values(lottiePaintTypes))
+                lottieGroup.addShapeAt(shape, lastIndex);
             })
         }
         iterateChildren(child.children, shapeChild);

@@ -14,6 +14,7 @@ class LottieShape extends LottieLayer {
     }
 
     addShapeAt(shape, index) {
+        shape.parent = this;
         this._shapes.splice(index, 0, shape);
     }
 

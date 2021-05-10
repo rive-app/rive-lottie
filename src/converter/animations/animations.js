@@ -1,6 +1,7 @@
 const math = require("../helpers/math");
 const LottieLayer = require("../LottieLayer");
 const LottieNull = require("../LottieNull");
+const LottieShapeGroup = require("../LottieShapeGroup");
 const LottieTransform = require("../LottieTransform");
 const { inOutEasing, inOutOneDimensionEasing } = require('../properties/easings');
 
@@ -56,18 +57,35 @@ const handleScaleY = (keyframes, lottieObject, lottie) => {
     const transform = lottieObject.transform;
     let lottieProperty = transform.scale;
     // Since Rive can animate scaleX and scaleY separatedly and Lottie can't
-    // We are creating a null object that will load the object transform
-    // And assing a clear transform to the original object
+    // We are creating a null object or a group object that will load the object transform
+    // And assign a clear transform to the original object
     if (lottieProperty.animated) {
-        const nullParent = new LottieNull();
-        nullParent.id = LottieLayer.ids++;
-        nullParent.transform = lottieObject.transform;
-        nullParent.parentId = lottieObject.parentId;
-        const objectTransform = new LottieTransform();
-        lottie.addLayer(nullParent);
-        lottieProperty = objectTransform.scale;
-        lottieObject.parentId = nullParent.id;
-        lottieObject.transform = objectTransform;
+        if (lottieObject.type === 'LottieShapeGroup') {
+            const shapeGroup = new LottieShapeGroup();
+            const lottieObjectParent = lottieObject.parent;
+            const shapes = lottieObjectParent.shapes;
+            const lottieObjectIndex = shapes.findIndex(shape => shape === lottieObject);
+            lottieObjectParent.removeShapeAt(lottieObjectIndex);
+            lottieObjectParent.addShapeAt(shapeGroup, lottieObjectIndex);
+            shapeGroup.addShape(lottieObject);
+            shapeGroup.transform = lottieObject.transform;
+            const objectTransform = new LottieTransform();
+            objectTransform.hasPositionSeparate = lottieObject.transform.hasPositionSeparate;
+            lottieProperty = objectTransform.scale;
+            lottieObject.transform = objectTransform;
+        } else {
+            const nullParent = new LottieNull();
+            nullParent.id = LottieLayer.ids++;
+            nullParent.transform = lottieObject.transform;
+            nullParent.parentId = lottieObject.parentId;
+            const objectTransform = new LottieTransform();
+            objectTransform.hasPositionSeparate = lottieObject.transform.hasPositionSeparate;
+            lottie.addLayer(nullParent);
+            lottieProperty = objectTransform.scale;
+            lottieObject.parentId = nullParent.id;
+            lottieObject.transform = objectTransform;
+        }
+        
     }
     const multiplier = math.toHundred;
     keyframes.forEach(keyframe => {

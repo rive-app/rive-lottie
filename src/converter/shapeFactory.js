@@ -225,7 +225,7 @@ const splitPaints = (lottieShape) => {
                 const shape = shapes[i];
                 const hasSplit = splitPaints(shape);
                 if (hasSplit) {
-                    shapes.splice(i, 1);
+                    lottieShape.removeShapeAt(i);
                 } else {
                     i += 1;
                 }

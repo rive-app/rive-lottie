@@ -28,11 +28,16 @@ class LottieShapeGroup extends LottieShapeContent {
     }
 
     addShapeAt(shape, index) {
+        shape.parent = this;
         this._shapes.splice(index, 0, shape);
     }
 
     getShapeAt(index) {
         return this._shapes[index];
+    }
+
+    removeShapeAt(index) {
+        this._shapes.splice(index, 1);
     }
 
     getLastIndexType(types) {

@@ -14,6 +14,10 @@ class LottieTransform {
         this._hasPositionSeparate = value;
     }
 
+    get hasPositionSeparate() {
+        return this._hasPositionSeparate;
+    }
+
     get opacity() {
         return this._opacity;
     }

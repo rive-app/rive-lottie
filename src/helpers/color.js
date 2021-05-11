@@ -10,7 +10,7 @@ const rgbaToVector = (color) => [
   color.r / 255,
   color.g / 255,
   color.b / 255,
-  color.a / 255 * 100,
+  (color.a / 255) * 100,
 ];
 
 module.exports = {

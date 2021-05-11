@@ -16,6 +16,7 @@ class LottieShapeSize {
     return this._y;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   findInterpolatedValue(prevKey, nextKey, time) {
     const interpolationFunction = bezierEaser.getBezierEasing(
       prevKey.o.x,

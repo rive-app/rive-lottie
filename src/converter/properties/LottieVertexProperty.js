@@ -43,7 +43,8 @@ class LottieVertexProperty extends LottieProperty {
     this._value.o.push(vertex.o);
   }
 
-  validate(value) {
+  // eslint-disable-next-line class-methods-use-this
+  validate() {
     // TODO: implement
     return true;
   }
@@ -68,6 +69,7 @@ class LottieVertexProperty extends LottieProperty {
     return objects;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getInterpolatedValue(frame, animationFrames) {
     if (frame < animationFrames[0].frame) {
       return animationFrames[0].value;
@@ -90,7 +92,12 @@ class LottieVertexProperty extends LottieProperty {
       interpolationFunction = bezierEaser.getBezierEasing(0, 0, 1, 1);
     } else {
       const { interpolator } = prevFrame;
-      interpolationFunction = bezierEaser.getBezierEasing(interpolator.x1, interpolator.y1, interpolator.x2, interpolator.y2);
+      interpolationFunction = bezierEaser.getBezierEasing(
+        interpolator.x1,
+        interpolator.y1,
+        interpolator.x2,
+        interpolator.y2,
+      );
     }
     const prePerc = (frame - prevFrame.frame) / (postFrame.frame - prevFrame.frame);
     const perc = interpolationFunction.get(prePerc);
@@ -218,15 +225,13 @@ class LottieVertexProperty extends LottieProperty {
           o: [],
           c: this._value.c,
         };
-        this._vertices.forEach(
-          (vertex) => {
-            // console.log('vertex', vertex.type);
-            const vertexValue = this.vertexSolvers[vertex.type](frame, vertex, objects[vertex.id]);
-            vertexPoints.v.push(vertexValue.v);
-            vertexPoints.i.push(vertexValue.i);
-            vertexPoints.o.push(vertexValue.o);
-          },
-        );
+        for (let i = 0; i < this._vertices.length; i += 1) {
+          const vertex = this._vertices[i];
+          const vertexValue = this.vertexSolvers[vertex.type](frame, vertex, objects[vertex.id]);
+          vertexPoints.v.push(vertexValue.v);
+          vertexPoints.i.push(vertexValue.i);
+          vertexPoints.o.push(vertexValue.o);
+        }
         interpolatedVertexValues.push({
           t: frame,
           s: [vertexPoints],

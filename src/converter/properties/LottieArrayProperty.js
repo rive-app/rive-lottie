@@ -6,6 +6,7 @@ class LottieArrayProperty extends LottieProperty {
     this.value = value;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   validate(value) {
     return Array.isArray(value);
   }

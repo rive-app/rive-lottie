@@ -15,7 +15,7 @@ const iterateRegularProperty = (lottieProperty, keyframes, multiplier) => {
   });
 };
 
-const iterateOneDimensionalProperty = (lottieProperty, keyframes, multiplier) => {
+const iterateOneDimensionalProperty = (lottieProperty, keyframes) => {
   keyframes.forEach((keyframe) => {
     lottieProperty.addKeyframe(
       keyframe.value,
@@ -43,7 +43,7 @@ const handlePositionY = (keyframes, lottieObject) => {
   iterateRegularProperty(lottieProperty, keyframes, math.identity);
 };
 
-const handleScaleX = (keyframes, lottieObject, lottie) => {
+const handleScaleX = (keyframes, lottieObject) => {
   const { transform } = lottieObject;
   const lottieProperty = transform.scale;
   const multiplier = math.toHundred;
@@ -75,17 +75,21 @@ const handleScaleY = (keyframes, lottieObject, lottie) => {
       const objectTransform = new LottieTransform();
       objectTransform.hasPositionSeparate = lottieObject.transform.hasPositionSeparate;
       lottieProperty = objectTransform.scale;
+      // eslint-disable-next-line no-param-reassign
       lottieObject.transform = objectTransform;
     } else {
       const nullParent = new LottieNull();
-      nullParent.id = LottieLayer.ids++;
+      nullParent.id = LottieLayer.ids;
+      LottieLayer.ids += 1;
       nullParent.transform = lottieObject.transform;
       nullParent.parentId = lottieObject.parentId;
       const objectTransform = new LottieTransform();
       objectTransform.hasPositionSeparate = lottieObject.transform.hasPositionSeparate;
       lottie.addLayer(nullParent);
       lottieProperty = objectTransform.scale;
+      // eslint-disable-next-line no-param-reassign
       lottieObject.parentId = nullParent.id;
+      // eslint-disable-next-line no-param-reassign
       lottieObject.transform = objectTransform;
     }
   }
@@ -100,8 +104,6 @@ const handleScaleY = (keyframes, lottieObject, lottie) => {
 };
 
 const handleShape = (keyframes, lottieObject, objectId, propertyKey) => {
-  const { vertices } = lottieObject;
-  const vertex = vertices.find((vertex) => vertex.id === objectId);
   const { vertexKeyframes } = lottieObject;
   keyframes.forEach((keyframe) => {
     if (!vertexKeyframes[keyframe.frame]) {
@@ -177,6 +179,7 @@ const setAnimatedProperties = (properties, objectId, lottie) => {
     } else if (animatedProperty.propertyKey === 39) {
       handleGradientStopPosition(keyframes, lottieObject);
     } else {
+      // eslint-disable-next-line no-console
       console.log('propertyKey', animatedProperty.propertyKey);
     }
   });

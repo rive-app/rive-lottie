@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const easingTypes = {
   IN_OUT: 'in-out',
   IN_OUT_ONE_DIMENSIONS: 'in-out-one-dimension',

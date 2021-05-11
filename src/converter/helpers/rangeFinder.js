@@ -7,7 +7,7 @@ const findInterpolatingProperty = (ranges, keyframeNumbers, currentRangeIndex, p
     upperKeyframeValue;
   while (lowerIndex >= 0) {
     const keyframe = keyframeNumbers[ranges[lowerIndex]];
-    const prop = keyframe.find((prop) => prop.propertyIndex === propertyIndex);
+    const prop = keyframe.find((propCandidate) => propCandidate.propertyIndex === propertyIndex);
     if (prop) {
       lowerKeyframeValue = prop;
       break;
@@ -16,7 +16,7 @@ const findInterpolatingProperty = (ranges, keyframeNumbers, currentRangeIndex, p
   }
   while (upperIndex <= ranges.length - 1) {
     const keyframe = keyframeNumbers[ranges[upperIndex]];
-    const prop = keyframe.find((prop) => prop.propertyIndex === propertyIndex);
+    const prop = keyframe.find((propCandidate) => propCandidate.propertyIndex === propertyIndex);
     if (prop) {
       upperKeyframeValue = prop;
       break;
@@ -35,14 +35,24 @@ const findMissingIndexes = (initKeyframeData, endKeyframeData, totalProperties) 
   .filter((index) => !(initKeyframeData.find((keyframeData) => keyframeData.propertyIndex === index)
                 && endKeyframeData.find((keyframeData) => keyframeData.propertyIndex === index)));
 
-const findInterpolatingProperties = (ranges, keyframeNumbers, currentRangeIndex, totalProperties) => {
-  const initFrame = parseInt(ranges[currentRangeIndex]);
-  const endFrame = parseInt(ranges[currentRangeIndex + 1]);
+const findInterpolatingProperties = (
+  ranges,
+  keyframeNumbers,
+  currentRangeIndex,
+  totalProperties,
+) => {
+  const initFrame = parseInt(ranges[currentRangeIndex], 10);
+  const endFrame = parseInt(ranges[currentRangeIndex + 1], 10);
   const initKeyframeData = keyframeNumbers[initFrame];
   const endKeyframeData = keyframeNumbers[endFrame];
   const missingProperties = findMissingIndexes(initKeyframeData, endKeyframeData, totalProperties);
   for (let i = 0; i < missingProperties.length; i += 1) {
-    if (findInterpolatingProperty(ranges, keyframeNumbers, currentRangeIndex, missingProperties[i])) {
+    if (findInterpolatingProperty(
+      ranges,
+      keyframeNumbers,
+      currentRangeIndex,
+      missingProperties[i],
+    )) {
       return true;
     }
   }
@@ -84,8 +94,8 @@ const findRangesOnKeyframes = (properties, withEqualEasing = false) => {
     .sort((a, b) => a - b);
   const finalFrames = new Set();
   for (let i = 0; i < ranges.length - 1; i += 1) {
-    const initFrame = parseInt(ranges[i]);
-    const endFrame = parseInt(ranges[i + 1]);
+    const initFrame = parseInt(ranges[i], 10);
+    const endFrame = parseInt(ranges[i + 1], 10);
     // if all properties are animated on the current range
     // and interpolations are independent or they are all equal
     // the range is full and can be added

@@ -1,4 +1,3 @@
-const Path = require('./Path');
 const PathVertex = require('./PathVertex');
 
 class CubicVertex extends PathVertex {

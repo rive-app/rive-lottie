@@ -27,6 +27,7 @@ class Artboard extends Component {
   }
 
   addChild(child) {
+    // eslint-disable-next-line no-param-reassign
     child.id = this._children.length;
     this._children.push(child);
   }
@@ -87,6 +88,7 @@ class Artboard extends Component {
       // console.log(child.name,'[--]',child.type,'[--]',child.id)
       if (child.parentId) {
         // console.log('parent: ',children[child.parentId].type, '; id: ', child.parentId);
+        // eslint-disable-next-line no-param-reassign
         child.parent = children[child.parentId];
         children[child.parentId].addChild(child);
       }

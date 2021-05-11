@@ -17,6 +17,7 @@ const createSolidColor = (solidColor) => {
   const { opacity } = lottieFill;
   const { color } = lottieFill;
   const vectorColor = rgbaToVector(solidColor.color);
+  // eslint-disable-next-line prefer-destructuring
   opacity.value = vectorColor[3];
   color.value = vectorColor;
   return lottieFill;

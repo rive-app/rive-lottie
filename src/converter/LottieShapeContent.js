@@ -1,43 +1,42 @@
 class LottieShapeContent {
+  constructor() {
+    this._type = this.constructor.name;
+    this._id = null;
+    this._parent = null;
+    this._name = '';
+  }
 
-    constructor() {
-        this._type = this.constructor.name;
-    }
+  get type() {
+    return this._type;
+  }
 
-    get type() {
-        return this._type;
-    }
+  set id(id) {
+    this._id = id;
+  }
 
-    set id(id) {
-        this._id = id;
-    }
-    set name(name) {
-        this._name = name;
-    }
-    get name() {
-        return this._name;
-    }
+  set name(name) {
+    this._name = name;
+  }
 
-    get id() {
-        return this._id;
-    }
+  get name() {
+    return this._name;
+  }
 
-    get parent() {
-        return this._parent;
-    }
+  get id() {
+    return this._id;
+  }
 
-    set parent(val) {
-        this._parent = val;
-    }
+  get parent() {
+    return this._parent;
+  }
 
-    getShapeById(id) {
-        return id === this._id ? this : null;
-    }
+  set parent(val) {
+    this._parent = val;
+  }
 
-    _id = null;
-    _parent = null;
-    _name = '';
-    _type = '';
+  getShapeById(id) {
+    return id === this._id ? this : null;
+  }
 }
 
 module.exports = LottieShapeContent;

@@ -64,6 +64,7 @@ const createSolidColor = (solidColor, stroke) => {
   const { color } = lottieStroke;
   const { strokeWidth } = lottieStroke;
   const vectorColor = rgbaToVector(solidColor.color);
+  // eslint-disable-next-line prefer-destructuring
   opacity.value = vectorColor[3];
   color.value = vectorColor;
   strokeWidth.value = stroke.thickness;

@@ -1,59 +1,57 @@
-const LottieTransform = require("./LottieTransform");
+const LottieTransform = require('./LottieTransform');
 
 class LottieLayer {
+  constructor(id) {
+    this._id = id;
+    this._parentId = undefined;
+    this._type = this.constructor.name;
+    this._transform = new LottieTransform();
+  }
 
-    constructor(id) {
-        this._id = id;
-        this._parentId = undefined;
-        this._type = this.constructor.name;
-    }
+  getObjectById(id) {
+    return this._id === id ? this : null;
+  }
 
-    getObjectById(id) {
-        return this._id === id ? this : null;
-    }
+  get type() {
+    return this._type;
+  }
 
-    get type() {
-        return this._type;
-    }
+  get parentId() {
+    return this._parentId;
+  }
 
-    get parentId() {
-        return this._parentId;
-    }
+  set parentId(val) {
+    this._parentId = val;
+  }
 
-    set parentId(val) {
-        this._parentId = val;
-    }
+  get id() {
+    return this._id;
+  }
 
-    get id() {
-        return this._id;
-    }
+  set id(val) {
+    this._id = val;
+  }
 
-    set id(val) {
-        this._id = val;
-    }
+  get transform() {
+    return this._transform;
+  }
 
-    get transform() {
-        return this._transform;
-    }
+  set transform(transform) {
+    this._transform = transform;
+  }
 
-    set transform(transform) {
-        this._transform = transform;
-    }
-
-    serialize() {
-        return {
-            ks: this.transform.serialize(),
-            ip: 0,
-            op: 200,
-            st: 0,
-            sr: 1,
-            bm: 0,
-            ind: this._id,
-            parent: this._parentId,
-        }
-    }
-
-    _transform = new LottieTransform();
+  serialize() {
+    return {
+      ks: this.transform.serialize(),
+      ip: 0,
+      op: 200,
+      st: 0,
+      sr: 1,
+      bm: 0,
+      ind: this._id,
+      parent: this._parentId,
+    };
+  }
 }
 
 LottieLayer.ids = 1000;

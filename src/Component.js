@@ -45,6 +45,7 @@ class Component extends RiveObject {
     this._flags = false;
   }
 
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   _setDependentIds(reader) {
     // TODO: implement
   }
@@ -57,10 +58,12 @@ class Component extends RiveObject {
     this._parentId = reader.readVarUint();
   }
 
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   _setChildOrder(reader) {
     // TODO: implement
   }
 
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   _setFlags(reader) {
     // TODO: implement
   }

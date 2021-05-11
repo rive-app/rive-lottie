@@ -13,7 +13,9 @@ const renderableElements = [
   layerTypes.SHAPE,
   layerTypes.NODE,
 ];
-const getRootElements = (children) => children.filter((child) => child.parentId === 0 && renderableElements.includes(child.type));
+const getRootElements = (children) => children.filter(
+  (child) => child.parentId === 0 && renderableElements.includes(child.type),
+);
 
 const createLottieAnimations = (artboard) => {
   const totalAnimations = Math.max(artboard.animations.length, 1);
@@ -34,7 +36,7 @@ const createLottieAnimations = (artboard) => {
   return animations;
 };
 
-const createNull = (nullData) => [new LottieNull()];
+const createNull = () => [new LottieNull()];
 
 const layerCreators = {
   [layerTypes.SHAPE]: shapeFactory,

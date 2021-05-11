@@ -2,6 +2,7 @@ const LottieLayer = require('./LottieLayer');
 
 class LottieComposition extends LottieLayer {
   constructor(width = 0, height = 0) {
+    super('');
     this._width = width;
     this._height = height;
     this._children = [];

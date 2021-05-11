@@ -1,16 +1,20 @@
 const Component = require('./Component');
+const bool = require('./helpers/boolean');
 
 class ShapePaint extends Component {
-    _isVisible = true;
+  constructor(reader) {
+    super(reader);
+    this._isVisible = true;
+  }
 
-    _setIsVisible(reader) {
-        // TODO implement with boolean
-    }
+  _setIsVisible(reader) {
+    this._isVisible = bool(reader);
+  }
 
-    registerProperties() {
-        super.registerProperties();
-        this._properties[41] = this._setIsVisible.bind(this);
-    }
+  registerProperties() {
+    super.registerProperties();
+    this._properties[41] = this._setIsVisible.bind(this);
+  }
 }
 
 module.exports = ShapePaint;

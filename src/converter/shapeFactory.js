@@ -36,6 +36,19 @@ const completeShapeGroup = (group, shape) => {
   group.addShape(shape);
 };
 
+const groupFactory = (shape) => {
+  const lottieShapeGroup = createShapeGroup();
+  lottieShapeGroup.shapeType = shape.type;
+  lottieShapeGroup.id = shape.id;
+  lottieShapeGroup.name = shape.name;
+  const groupTransform = lottieShapeGroup.transform;
+  groupTransform.scale.value = [math.toHundred(shape.scaleX), math.toHundred(shape.scaleY)];
+  groupTransform.rotation.value = math.radsToDegs(shape.rotation);
+  groupTransform.x.value = shape.x;
+  groupTransform.y.value = shape.y;
+  return lottieShapeGroup;
+};
+
 const createRectangle = (rectangle) => {
   const lottieShapeGroup = groupFactory(rectangle);
   const lottieRectangle = new LottieShapeRectangle();
@@ -110,19 +123,6 @@ const createPointsPath = (pointsPath) => {
   return lottieShapeGroup;
 };
 
-const groupFactory = (shape) => {
-  const lottieShapeGroup = createShapeGroup();
-  lottieShapeGroup.shapeType = shape.type;
-  lottieShapeGroup.id = shape.id;
-  lottieShapeGroup.name = shape.name;
-  const groupTransform = lottieShapeGroup.transform;
-  groupTransform.scale.value = [math.toHundred(shape.scaleX), math.toHundred(shape.scaleY)];
-  groupTransform.rotation.value = math.radsToDegs(shape.rotation);
-  groupTransform.x.value = shape.x;
-  groupTransform.y.value = shape.y;
-  return lottieShapeGroup;
-};
-
 const shapeCreators = {
   [shapeTypes.RECTANGLE]: createRectangle,
   [shapeTypes.ELLIPSE]: createEllipse,
@@ -184,13 +184,15 @@ const groupHasPaint = (group) => {
   return false;
 };
 
-const getLastShapePaint = (shape) => {
+const getLastShapePaint = (_shape) => {
+  let shape = _shape;
   while (shape.parent) {
     if (groupHasPaint(shape.parent)) {
       return shape.parent;
     }
     shape = shape.parent;
   }
+  return null;
 };
 
 const splitPaints = (lottieShape) => {

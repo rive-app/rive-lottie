@@ -1,53 +1,53 @@
 class BinaryReader {
+  constructor(buffer) {
+    this.readIndex = 0;
+    this.buffer = buffer;
+  }
 
-    readIndex = 0;
+  isEOF() {
+    return this.readIndex >= this.buffer.length;
+  }
 
-    constructor(buffer) {
-        this.buffer = buffer;
+  readUint8() {
+    const value = this.buffer.readUInt8(this.readIndex);
+    this.readIndex += 1;
+    return value;
+  }
+
+  readUint32() {
+    const value = this.buffer.readUInt32LE(this.readIndex);
+    this.readIndex += 4;
+    return value;
+  }
+
+  readVarUint() {
+    let result = 0;
+    let shift = 0;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      // eslint-disable-next-line no-plusplus
+      const byte = this.buffer.readUInt8(this.readIndex++) & 0xff;
+      result |= (byte & 0x7f) << shift;
+      if ((byte & 0x80) === 0) break;
+      shift += 7;
     }
+    return result;
+  }
 
-    isEOF() {
-        return this.readIndex >= this.buffer.length;
+  readFloat32() {
+    const value = this.buffer.readFloatLE(this.readIndex);
+    this.readIndex += 4;
+    return value;
+  }
+
+  readString(explicitLength = true) {
+    const length = explicitLength ? this.readVarUint() : this.buffer.lengthInBytes;
+    let str = '';
+    for (let i = 0; i < length; i += 1) {
+      str += String.fromCharCode(this.readUint8());
     }
-
-    readUint8() {
-        const value = this.buffer.readUInt8(this.readIndex);
-        this.readIndex += 1;
-        return value;
-    }
-
-    readUint32() {
-        const value = this.buffer.readUInt32LE(this.readIndex);
-        this.readIndex += 4;
-        return value;
-      }
-
-    readVarUint() {
-        let result = 0;
-        let shift = 0;
-        while (true) {
-            let byte = this.buffer.readUInt8(this.readIndex++) & 0xff;
-            result |= (byte & 0x7f) << shift;
-            if ((byte & 0x80) === 0) break;
-            shift += 7;
-        }
-        return result;
-    }
-
-    readFloat32() {
-        let value = this.buffer.readFloatLE(this.readIndex);
-        this.readIndex += 4;
-        return value;
-    }
-
-    readString(explicitLength = true) {
-        const length = explicitLength ? this.readVarUint() : this.buffer.lengthInBytes;
-        let str = '';
-        for (let i = 0; i < length; i += 1) {
-            str += String.fromCharCode(this.readUint8());
-        }
-        return str;
-    }
+    return str;
+  }
 }
 
 module.exports = BinaryReader;

@@ -12,7 +12,10 @@ const nullFactory = (nullElement, parentId) => {
   const lottieObject = new LottieNull(nullElement.id);
   lottieObject.parentId = parentId;
   layerProperties(lottieObject, nullElement);
-  const children = nullElement.children.map((child) => createLayersFromElement(child, lottieObject.id));
+  const children = nullElement.children.map(
+    // eslint-disable-next-line no-use-before-define
+    (child) => createLayersFromElement(child, lottieObject.id),
+  );
   return [lottieObject, children.flat()].flat();
 };
 
@@ -26,7 +29,7 @@ const createLayersFromElement = (element, parentId) => {
   if (layerCreators[element.type]) {
     return layerCreators[element.type](element, parentId);
   }
-  return createNull(element);
+  return null;
 };
 
 module.exports = nullFactory;

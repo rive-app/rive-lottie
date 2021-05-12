@@ -7,6 +7,7 @@ const LottieShapeEllipse = require('./LottieShapeEllipse');
 const math = require('./helpers/math');
 const layerProperties = require('./helpers/layerProperties');
 const LottieShapePath = require('./LottieShapePath');
+const LottieShapePolygon = require('./LottieShapePolygon');
 
 const shapeTypes = {
   RECTANGLE: 'Rectangle',
@@ -69,6 +70,18 @@ const createEllipse = (ellipse) => {
   return lottieShapeGroup;
 };
 
+const createPolygon = (polygon) => {
+  const lottieShapeGroup = groupFactory(polygon);
+  const lottiePolygon = new LottieShapePolygon();
+  lottiePolygon.position.value = [polygon.originx, polygon.originy];
+  lottiePolygon.size.x.value = polygon.width;
+  lottiePolygon.size.y.value = polygon.height;
+  lottiePolygon.points.value = polygon.points;
+  lottiePolygon.roundness.value = polygon.cornerRadius;
+  completeShapeGroup(lottieShapeGroup, lottiePolygon);
+  return lottieShapeGroup;
+};
+
 const createPointsPath = (pointsPath) => {
   const lottieShapeGroup = groupFactory(pointsPath);
   const lottieShapePath = new LottieShapePath();
@@ -126,6 +139,7 @@ const createPointsPath = (pointsPath) => {
 const shapeCreators = {
   [shapeTypes.RECTANGLE]: createRectangle,
   [shapeTypes.ELLIPSE]: createEllipse,
+  [shapeTypes.POLYGON]: createPolygon,
   [shapeTypes.POINTS_PATH]: createPointsPath,
   [shapeTypes.FILL]: fillFactory,
   [shapeTypes.STROKE]: strokeFactory,
@@ -137,6 +151,7 @@ const childrenShapes = [
   shapeTypes.RECTANGLE,
   shapeTypes.ELLIPSE,
   shapeTypes.POINTS_PATH,
+  shapeTypes.POLYGON,
 ];
 
 const childrenNodes = [

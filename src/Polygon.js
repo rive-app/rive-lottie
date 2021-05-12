@@ -7,6 +7,14 @@ class Polygon extends ParametricPath {
     this._cornerRadius = 0;
   }
 
+  get points() {
+    return this._points;
+  }
+
+  get cornerRadius() {
+    return this._cornerRadius;
+  }
+
   _setPoints(reader) {
     this._points = reader.readVarUint();
   }

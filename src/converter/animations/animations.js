@@ -122,7 +122,7 @@ const handleShape = (keyframes, lottieObject, objectId, propertyKey) => {
 };
 
 const handleShapeSize = (keyframes, lottieObject, propertyKey) => {
-  const lottieRectangle = lottieObject.getShapeAt(0).getShapeAt(0);
+  const lottieRectangle = lottieObject.getShapeAt(0);
   const lottieSize = lottieRectangle.size;
   const lottieProperty = propertyKey === 20
     ? lottieSize.x

@@ -1,6 +1,7 @@
 const BinaryReader = require('./BinaryReader');
 const Project = require('./Project');
 const Header = require('./Header');
+const riveModule = require('./helpers/riveModule');
 
 const createAnimationsFromArtboard = require('./converter/createAnimationsFromArtboard');
 
@@ -13,19 +14,21 @@ function validateHeader(reader) {
   return header;
 }
 
-function createAnimations(project) {
+function createAnimations(project, riveFile) {
   return project.artboards
-    .map(createAnimationsFromArtboard)
+    .map((artboard) => createAnimationsFromArtboard(artboard, riveFile))
     .flat();
 }
 
-function build(buffer) {
+async function build(buffer) {
   try {
+    await riveModule.loadModule();
+    const riveFile = riveModule.load(new Uint8Array(buffer));
     const reader = new BinaryReader(buffer);
     validateHeader(reader);
     const project = new Project(reader);
     project.searchArtboards();
-    const animations = createAnimations(project);
+    const animations = createAnimations(project, riveFile);
     const animationsData = animations.map((animation) => animation.serialize());
     return animationsData;
   } catch (err) {

@@ -1,6 +1,16 @@
 const LottieShapeContent = require('./LottieShapeContent');
 const LottieTransform = require('./LottieTransform');
 
+const shapeTypes = {
+  RECTANGLE: 'LottieShapeRectangle',
+  ELLIPSE: 'LottieShapeEllipse',
+  POLYGON: 'LottieShapePolygon',
+  SHAPE: 'LottieShapePath',
+  GROUP: 'LottieShapeGroup',
+};
+
+const flattennableShapes = Object.values(shapeTypes);
+
 class LottieShapeGroup extends LottieShapeContent {
   constructor() {
     super();
@@ -72,6 +82,16 @@ class LottieShapeGroup extends LottieShapeContent {
       }
     }
     return shape;
+  }
+
+  flattenUnexportableShapes(riveArtboard, riveAnimation) {
+    this._shapes.forEach((shape) => {
+      // console.log(flattennableShapes);
+      console.log(shape.type);
+      if (flattennableShapes.includes(shape.type)) {
+        shape.flattenUnexportableShapes(riveArtboard, riveAnimation);
+      }
+    });
   }
 
   serializeChildren() {

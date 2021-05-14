@@ -59,6 +59,10 @@ class LottieShape extends LottieLayer {
     };
   }
 
+  flattenUnexportableShapes(riveArtboard, riveAnimation) {
+    this._shapes.forEach((shape) => shape.flattenUnexportableShapes(riveArtboard, riveAnimation));
+  }
+
   serialize() {
     return {
       ty: 4,

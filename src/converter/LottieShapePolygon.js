@@ -29,6 +29,10 @@ class LottieShapePolygon extends LottieShapeContent {
     return this._points;
   }
 
+  flattenUnexportableShapes(riveArtboard, riveAnimation) {
+    console.log('FLAT', this._size);
+  }
+
   serialize() {
     let rootObject;
     const star = {

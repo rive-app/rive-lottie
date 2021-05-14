@@ -21,6 +21,10 @@ class LottieAnimation {
     this._outPoint = value;
   }
 
+  get layers() {
+    return this._layers;
+  }
+
   addLayer(layer) {
     this._layers.push(layer);
   }

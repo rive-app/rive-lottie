@@ -1,12 +1,16 @@
 {
-  "name": "rive-to-lottie",
-  "version": "1.0.0",
-  "description": "",
+  "name": "rive-lottie",
+  "version": "0.1.0",
+  "description": "Rive to Lottie Converter",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint ./src/**/*",
     "lint:fix": "npx eslint ./src/**/* --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rive-app/rive-lottie"
   },
   "author": "",
   "license": "ISC",

@@ -14,26 +14,25 @@ function validateHeader(reader) {
   return header;
 }
 
-function createAnimations(project, riveFile) {
+function createAnimations(project) {
   return project.artboards
-    .map((artboard) => createAnimationsFromArtboard(artboard, riveFile))
+    .map((artboard) => createAnimationsFromArtboard(artboard))
     .flat();
 }
 
 async function build(buffer) {
   try {
     await riveModule.loadModule();
-    const riveFile = riveModule.load(new Uint8Array(buffer));
     const reader = new BinaryReader(buffer);
     validateHeader(reader);
     const project = new Project(reader);
     project.searchArtboards();
-    const animations = createAnimations(project, riveFile);
+    const animations = createAnimations(project);
     const animationsData = animations.map((animation, index) => {
+      const riveFile = riveModule.load(new Uint8Array(buffer));
       const artboard = riveFile.defaultArtboard();
       const riveAnimation = artboard.animationByIndex(index);
       const animationInstance = riveModule.loadLinearAnimation(riveAnimation);
-      console.log('animation', animation.frameRate)
       return animation.serialize({
         artboard,
         animation: animationInstance,

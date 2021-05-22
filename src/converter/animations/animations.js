@@ -85,7 +85,8 @@ const handleScaleY = (keyframes, lottieObject, lottie) => {
       nullParent.parentId = lottieObject.parentId;
       const objectTransform = new LottieTransform();
       objectTransform.hasPositionSeparate = lottieObject.transform.hasPositionSeparate;
-      lottie.addLayer(nullParent);
+      const lottieParent = lottieObject.parentPreComp || lottie;
+      lottieParent.addLayer(nullParent);
       lottieProperty = objectTransform.scale;
       // eslint-disable-next-line no-param-reassign
       lottieObject.parentId = nullParent.id;
@@ -155,13 +156,13 @@ const setAnimatedProperties = (properties, objectId, lottie) => {
   properties.forEach((animatedProperty) => {
     const { keyframes } = animatedProperty;
     if (animatedProperty.propertyKey === 13) {
-      handlePositionX(keyframes, lottieObject, lottie);
+      handlePositionX(keyframes, lottieObject);
     } else if (animatedProperty.propertyKey === 14) {
-      handlePositionY(keyframes, lottieObject, lottie);
+      handlePositionY(keyframes, lottieObject);
     } else if (animatedProperty.propertyKey === 15) {
-      handleRotation(keyframes, lottieObject, lottie);
+      handleRotation(keyframes, lottieObject);
     } else if (animatedProperty.propertyKey === 16) {
-      handleScaleX(keyframes, lottieObject, lottie);
+      handleScaleX(keyframes, lottieObject);
     } else if (animatedProperty.propertyKey === 17) {
       handleScaleY(keyframes, lottieObject, lottie);
     } else if ([24, 25, 82, 83, 84, 85, 86, 87].includes(animatedProperty.propertyKey)) {

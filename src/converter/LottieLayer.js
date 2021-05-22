@@ -4,6 +4,7 @@ class LottieLayer {
   constructor(id) {
     this._id = id;
     this._parentId = undefined;
+    this._parentPreComp = null;
     this._type = this.constructor.name;
     this._transform = new LottieTransform();
   }
@@ -38,6 +39,14 @@ class LottieLayer {
 
   set transform(transform) {
     this._transform = transform;
+  }
+
+  set parentPreComp(preComp) {
+    this._parentPreComp = preComp;
+  }
+
+  get parentPreComp() {
+    return this._parentPreComp;
   }
 
   serialize() {

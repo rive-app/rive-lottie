@@ -39,15 +39,18 @@ class LottieAnimation {
   serializeLayers() {
     return this._layers.reduce((accumulator, layer) => {
       const layerData = layer.serialize();
-      accumulator.assets = [
-        ...accumulator.assets,
-        ...(layerData.assets || []),
-      ];
-      accumulator.layers = [
-        ...accumulator.layers,
-        ...(layerData.layers || []),
-      ];
-      accumulator.layers.push(layerData);
+      if (layerData.assets) {
+        accumulator.assets = [
+          ...accumulator.assets,
+          ...(layerData.assets || []),
+        ];
+        accumulator.layers = [
+          ...accumulator.layers,
+          ...(layerData.layers || []),
+        ];
+      } else {
+        accumulator.layers.push(layerData);
+      }
       return accumulator;
     }, {
       assets: [],

@@ -3,6 +3,7 @@ const LottieNull = require('./LottieNull');
 const shapeFactory = require('./shapeFactory');
 const nullFactory = require('./nullFactory');
 const addAnimations = require('./animations/animations');
+const LottiePreComp = require('./LottiePreComp');
 
 const layerTypes = {
   SHAPE: 'Shape',
@@ -43,9 +44,9 @@ const layerCreators = {
   [layerTypes.NODE]: nullFactory,
 };
 
-const createLayersFromElement = (element) => {
+const createLayersFromElement = (element, width, height) => {
   if (layerCreators[element.type]) {
-    return layerCreators[element.type](element, undefined);
+    return layerCreators[element.type](element, undefined, width, height);
   }
 
   return createNull(element);
@@ -55,9 +56,13 @@ const addElements = (lottieAnimations, artboard) => {
   const rootElements = getRootElements(artboard.children);
   lottieAnimations.forEach((lottie) => {
     rootElements.forEach((element) => {
-      const layers = createLayersFromElement(element, element.id);
+      const preComp = new LottiePreComp('', artboard.width, artboard.height);
+      lottie.addLayer(preComp);
+      const layers = createLayersFromElement(element);
       layers
-        .forEach((layer) => lottie.addLayer(layer));
+        .forEach((layer) => {
+          preComp.addLayer(layer);
+        });
     });
   });
 };

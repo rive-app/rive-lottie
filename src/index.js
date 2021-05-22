@@ -29,7 +29,17 @@ async function build(buffer) {
     const project = new Project(reader);
     project.searchArtboards();
     const animations = createAnimations(project, riveFile);
-    const animationsData = animations.map((animation) => animation.serialize());
+    const animationsData = animations.map((animation, index) => {
+      const artboard = riveFile.defaultArtboard();
+      const riveAnimation = artboard.animationByIndex(index);
+      const animationInstance = riveModule.loadLinearAnimation(riveAnimation);
+      console.log('animation', animation.frameRate)
+      return animation.serialize({
+        artboard,
+        animation: animationInstance,
+        frameRate: animation.frameRate,
+      });
+    });
     return animationsData;
   } catch (err) {
     // eslint-disable-next-line no-console

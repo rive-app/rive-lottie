@@ -29,7 +29,7 @@ class LottiePreComp extends LottieLayer {
     return super.getObjectById(id) || this.getLayerById(id);
   }
 
-  serialize() {
+  serialize(riveModule) {
     const refId = `comp_${LottiePreComp.refIdCount}`;
     LottiePreComp.refIdCount += 1;
     const preCompLayer = {
@@ -39,13 +39,13 @@ class LottiePreComp extends LottieLayer {
       refId,
       w: this._width,
       h: this._height,
-      ...super.serialize(),
+      ...super.serialize(riveModule),
     };
     return {
       assets: [
         {
           id: refId,
-          layers: this._layers.map((layer) => layer.serialize()),
+          layers: this._layers.map((layer) => layer.serialize(riveModule)),
         },
       ],
       layers: [

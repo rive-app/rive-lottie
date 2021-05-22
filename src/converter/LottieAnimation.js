@@ -13,6 +13,10 @@ class LottieAnimation {
     this._frameRate = value;
   }
 
+  get frameRate() {
+    return this._frameRate;
+  }
+
   set inPoint(value) {
     this._inPoint = value;
   }
@@ -40,9 +44,9 @@ class LottieAnimation {
     return object;
   }
 
-  serializeLayers() {
+  serializeLayers(riveModule) {
     return this._layers.reduce((accumulator, layer) => {
-      const layerData = layer.serialize();
+      const layerData = layer.serialize(riveModule);
       if (layerData.assets) {
         accumulator.assets = [
           ...accumulator.assets,
@@ -62,7 +66,7 @@ class LottieAnimation {
     });
   }
 
-  serialize() {
+  serialize(riveModule) {
     return {
       w: this._width,
       h: this._height,
@@ -71,7 +75,7 @@ class LottieAnimation {
       op: this._outPoint,
       fr: this._frameRate,
       ddd: 0,
-      ...this.serializeLayers(),
+      ...this.serializeLayers(riveModule),
     };
   }
 }

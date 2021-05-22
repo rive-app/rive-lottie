@@ -131,6 +131,15 @@ const handleShapeSize = (keyframes, lottieObject, propertyKey) => {
   iterateRegularProperty(lottieProperty, keyframes, math.identity);
 };
 
+const handleShapeOrigin = (keyframes, lottieObject, propertyKey) => {
+  const lottieShape = lottieObject.getShapeAt(0);
+  const lottieSize = lottieShape.position;
+  const lottieProperty = propertyKey === 123
+    ? lottieSize.x
+    : lottieSize.y;
+  iterateRegularProperty(lottieProperty, keyframes, math.identity);
+};
+
 const handleColor = (keyframes, lottieObject) => {
   const lottieProperty = lottieObject.color;
   iterateOneDimensionalProperty(lottieProperty, keyframes, math.identity);
@@ -179,6 +188,8 @@ const setAnimatedProperties = (properties, objectId, lottie) => {
       handleColor(keyframes, lottieObject);
     } else if (animatedProperty.propertyKey === 39) {
       handleGradientStopPosition(keyframes, lottieObject);
+    } else if ([123, 124].includes(animatedProperty.propertyKey)) {
+      handleShapeOrigin(keyframes, lottieObject, animatedProperty.propertyKey);
     } else {
       // eslint-disable-next-line no-console
       console.log('propertyKey', animatedProperty.propertyKey);

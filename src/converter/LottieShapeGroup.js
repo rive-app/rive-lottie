@@ -94,15 +94,15 @@ class LottieShapeGroup extends LottieShapeContent {
     });
   }
 
-  serializeChildren() {
-    return this._shapes.map((shape) => shape.serialize());
+  serializeChildren(riveModule) {
+    return this._shapes.map((shape) => shape.serialize(riveModule));
   }
 
-  serialize() {
+  serialize(riveModule) {
     return {
       ty: 'gr',
       it: [
-        ...this.serializeChildren(),
+        ...this.serializeChildren(riveModule),
         {
           ...this._transform.serialize(),
           ty: 'tr',

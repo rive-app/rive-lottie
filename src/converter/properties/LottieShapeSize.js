@@ -8,6 +8,10 @@ class LottieShapeSize {
     this._y = new LottieNumberProperty();
   }
 
+  get animated() {
+    return this._x.animated || this._y.animated;
+  }
+
   get x() {
     return this._x;
   }

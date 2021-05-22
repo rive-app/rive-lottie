@@ -3,7 +3,6 @@ const LottieNull = require('./LottieNull');
 const shapeFactory = require('./shapeFactory');
 const nullFactory = require('./nullFactory');
 const addAnimations = require('./animations/animations');
-const flattenPaths = require('./flattener/flatten')
 const LottiePreComp = require('./LottiePreComp');
 
 const layerTypes = {
@@ -68,13 +67,10 @@ const addElements = (lottieAnimations, artboard) => {
   });
 };
 
-const createAnimationsFromArtboard = (artboard, riveFile) => {
-  // console.log('artboard', artboard);
-  // console.log('riveFile', riveFile);
+const createAnimationsFromArtboard = (artboard) => {
   const lottieAnimations = createLottieAnimations(artboard);
   addElements(lottieAnimations, artboard);
   addAnimations(lottieAnimations, artboard);
-  flattenPaths(lottieAnimations, artboard, riveFile);
   return lottieAnimations;
 };
 

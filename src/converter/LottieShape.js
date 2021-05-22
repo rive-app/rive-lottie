@@ -52,10 +52,10 @@ class LottieShape extends LottieLayer {
     return super.getObjectById(id) || this.getShapeById(id);
   }
 
-  serializeShapes() {
+  serializeShapes(riveModule) {
     return {
       shapes: this._shapes
-        .map((shape) => shape.serialize()),
+        .map((shape) => shape.serialize(riveModule)),
     };
   }
 
@@ -63,12 +63,12 @@ class LottieShape extends LottieLayer {
     this._shapes.forEach((shape) => shape.flattenUnexportableShapes(riveArtboard, riveAnimation));
   }
 
-  serialize() {
+  serialize(riveModule) {
     return {
       ty: 4,
       sr: 1,
-      ...super.serialize(),
-      ...this.serializeShapes(),
+      ...super.serialize(riveModule),
+      ...this.serializeShapes(riveModule),
     };
   }
 }

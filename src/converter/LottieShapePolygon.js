@@ -17,6 +17,7 @@ class LottieShapePolygon extends LottieShapeContent {
     this._size = new LottieShapeSize();
     this._points = new LottieNumberProperty();
     this._roundness = new LottieNumberProperty();
+    this._innerRadius = new LottieNumberProperty();
 
     this._polygonType = types.POLYGON;
   }
@@ -37,6 +38,10 @@ class LottieShapePolygon extends LottieShapeContent {
 
   get roundness() {
     return this._roundness;
+  }
+
+  get innerRadius() {
+    return this._innerRadius;
   }
 
   get points() {
@@ -81,18 +86,34 @@ class LottieShapePolygon extends LottieShapeContent {
       this.position.y.serialize(),
       this._points.serialize(),
       this._roundness.serialize(),
+      this.innerRadius.serialize(),
 
     ], true);
     return flattenPaths(rangeTimes, id, riveData);
   }
 
   completeInnerRadius() {
-    if (this.type === types.STAR) {
-      return {
-        ir: {
+    if (this._polygonType === types.STAR) {
+      const innerRadius = this._innerRadius.serialize();
+      let innerRadiusData;
+      if (this._innerRadius.animated) {
+        innerRadiusData = {
+          a: 1,
+          k: innerRadius.k.map((keyframe) => (
+            {
+              ...keyframe,
+              s: [this._size.x.value[0] * [keyframe.s[0]] * 0.5],
+            }
+          )),
+        };
+      } else {
+        innerRadiusData = {
           a: 0,
-          k: this._size.x.value * 0.5,
-        },
+          k: this._size.x.value[0] * innerRadius.k * 0.5,
+        };
+      }
+      return {
+        ir: innerRadiusData,
         is: {
           a: 0,
           k: 0,
@@ -119,7 +140,7 @@ class LottieShapePolygon extends LottieShapeContent {
       if (this._size.animated) {
         return this.flattenShape(riveData);
       }
-      if (this._size.x.value !== this._size.y.value) {
+      if (this._size.x.value[0] !== this._size.y.value[0]) {
         return this.flattenShape(riveData);
       }
     }

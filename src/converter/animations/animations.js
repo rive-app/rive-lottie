@@ -155,6 +155,13 @@ const handleStrokeThickness = (keyframes, lottieObject) => {
   iterateRegularProperty(lottieProperty, keyframes, math.identity);
 };
 
+const handleStarInnerRadius = (keyframes, lottieObject) => {
+  const lottieShape = lottieObject.getShapeAt(0);
+  const lottieProperty = lottieShape.innerRadius;
+
+  iterateRegularProperty(lottieProperty, keyframes, math.identity);
+};
+
 const handleOpacity = (keyframes, lottieObject) => {
   const lottieProperty = lottieObject.transform.opacity;
   iterateRegularProperty(lottieProperty, keyframes, math.toHundred);
@@ -190,6 +197,8 @@ const setAnimatedProperties = (properties, objectId, lottie) => {
       handleGradientStopPosition(keyframes, lottieObject);
     } else if ([123, 124].includes(animatedProperty.propertyKey)) {
       handleShapeOrigin(keyframes, lottieObject, animatedProperty.propertyKey);
+    } else if (animatedProperty.propertyKey === 127) {
+      handleStarInnerRadius(keyframes, lottieObject);
     } else {
       // eslint-disable-next-line no-console
       console.log('propertyKey', animatedProperty.propertyKey);

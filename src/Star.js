@@ -1,6 +1,10 @@
 const Polygon = require('./Polygon');
 
 class Star extends Polygon {
+  get innerRadius() {
+    return this._innerRadius;
+  }
+
   _initializeValues() {
     super._initializeValues();
     this._innerRadius = 0.5;

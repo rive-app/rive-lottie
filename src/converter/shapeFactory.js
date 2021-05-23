@@ -91,6 +91,7 @@ const createPolygon = (polygon) => {
 const createStar = (star) => {
   const lottieShapeGroup = createPolygon(star);
   const lottieStar = lottieShapeGroup.getShapeAt(0);
+  lottieStar.innerRadius.value = star.innerRadius;
   lottieStar.polygonType = LottieShapePolygon.polygonTypes.STAR;
   return lottieShapeGroup;
 };

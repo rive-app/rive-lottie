@@ -34,6 +34,14 @@ class LottieShapeEllipse extends LottieShapeContent {
         }
         )),
       };
+    } else {
+      finalPos = {
+        a: 0,
+        k: [
+          size.k[0] * -(position.k[0] - 0.5),
+          size.k[1] * -(position.k[1] - 0.5),
+        ],
+      };
     }
     return finalPos;
   }
@@ -53,8 +61,8 @@ class LottieShapeEllipse extends LottieShapeContent {
   serialize(riveData) {
     if (this._size.animated) {
       if (!this._position.animated
-        && this._position.value[0] === 0.5
-        && this._position.value[1] === 0.5) {
+        && this._position.x.value === 0.5
+        && this._position.y.value === 0.5) {
         return {
           ty: 'el',
           p: { a: 0, k: [0, 0] },

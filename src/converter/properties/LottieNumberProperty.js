@@ -14,6 +14,10 @@ class LottieNumberProperty extends LottieProperty {
     super.value = [value];
   }
 
+  get value() {
+    return super.value;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   validate(value) {
     return Array.isArray(value) && !Number.isNaN(Number(value[0]));

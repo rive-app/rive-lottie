@@ -53,7 +53,8 @@ const groupFactory = (shape) => {
 const createRectangle = (rectangle) => {
   const lottieShapeGroup = groupFactory(rectangle);
   const lottieRectangle = new LottieShapeRectangle();
-  lottieRectangle.position.value = [rectangle.originx, rectangle.originy];
+  lottieRectangle.position.x.value = rectangle.originx;
+  lottieRectangle.position.y.value = rectangle.originy;
   lottieRectangle.size.x.value = rectangle.width;
   lottieRectangle.size.y.value = rectangle.height;
   lottieRectangle.roundness.value = rectangle.cornerRadius;
@@ -64,8 +65,10 @@ const createRectangle = (rectangle) => {
 const createEllipse = (ellipse) => {
   const lottieShapeGroup = groupFactory(ellipse);
   const lottieEllipse = new LottieShapeEllipse();
-  lottieEllipse.position.value = [ellipse.originx, ellipse.originy];
-  lottieEllipse.size.value = [ellipse.width, ellipse.height];
+  lottieEllipse.position.x.value = ellipse.originx;
+  lottieEllipse.position.y.value = ellipse.originy;
+  lottieEllipse.size.x.value = ellipse.width;
+  lottieEllipse.size.y.value = ellipse.height;
   completeShapeGroup(lottieShapeGroup, lottieEllipse);
   return lottieShapeGroup;
 };
@@ -73,7 +76,8 @@ const createEllipse = (ellipse) => {
 const createPolygon = (polygon) => {
   const lottieShapeGroup = groupFactory(polygon);
   const lottiePolygon = new LottieShapePolygon();
-  lottiePolygon.position.value = [polygon.originx, polygon.originy];
+  lottiePolygon.position.x.value = polygon.originx;
+  lottiePolygon.position.y.value = polygon.originy;
   lottiePolygon.size.x.value = polygon.width;
   lottiePolygon.size.y.value = polygon.height;
   lottiePolygon.points.value = polygon.points;

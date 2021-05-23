@@ -10,8 +10,8 @@ const flattenPaths = (rangeTimes, pathId, riveData) => {
   riveAnimation.advance(-currentTime);
   riveArtboard.advance(-currentTime);
   //
-  riveAnimation.advance(initialTime);
-  riveArtboard.advance(initialTime);
+  riveAnimation.advance(initialTime / frameRate);
+  riveArtboard.advance(initialTime / frameRate);
   for (let i = initialTime; i < endTime; i += 1) {
     riveAnimation.advance(1 / frameRate);
     riveAnimation.apply(riveArtboard, 1.0);
@@ -24,8 +24,13 @@ const flattenPaths = (rangeTimes, pathId, riveData) => {
       c: true,
     };
     for (let j = 0; j < flatPath.length(); j += 1) {
-      path.i.push([flatPath.inX(j) - flatPath.x(j), flatPath.inY(j) - flatPath.y(j)]);
-      path.o.push([flatPath.outX(j) - flatPath.x(j), flatPath.outY(j) - flatPath.y(j)]);
+      if (!flatPath.isCubic(j)) {
+        path.i.push([0, 0]);
+        path.o.push([0, 0]);
+      } else {
+        path.i.push([flatPath.inX(j) - flatPath.x(j), flatPath.inY(j) - flatPath.y(j)]);
+        path.o.push([flatPath.outX(j) - flatPath.x(j), flatPath.outY(j) - flatPath.y(j)]);
+      }
       path.v.push([flatPath.x(j), flatPath.y(j)]);
     }
     keyframes.push({

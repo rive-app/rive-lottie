@@ -3,6 +3,7 @@ const Backboard = require('./Backboard');
 const Node = require('./Node');
 const Shape = require('./Shape');
 const Ellipse = require('./Ellipse');
+const Triangle = require('./Triangle');
 const Polygon = require('./Polygon');
 const Fill = require('./Fill');
 const SolidColor = require('./SolidColor');
@@ -41,6 +42,7 @@ class Project {
       5: this._createStraightVertex.bind(this),
       6: this._createCubicDetachedVertex.bind(this),
       7: this._createRectangle.bind(this),
+      8: this._createTriangle.bind(this),
       16: this._createPointsPath.bind(this),
       17: this._createRadialGradient.bind(this),
       18: this._createSolidColor.bind(this),
@@ -93,6 +95,11 @@ class Project {
   _createEllipse(reader) {
     const ellipse = Object.seal(new Ellipse(reader));
     this.lastObjects.artboard.addChild(ellipse);
+  }
+
+  _createTriangle(reader) {
+    const triangle = Object.seal(new Triangle(reader));
+    this.lastObjects.artboard.addChild(triangle);
   }
 
   _createPolygon(reader) {

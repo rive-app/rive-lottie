@@ -14,6 +14,7 @@ const shapeTypes = {
   ELLIPSE: 'Ellipse',
   POLYGON: 'Polygon',
   STAR: 'Star',
+  TRIANGLE: 'Triangle',
   FILL: 'Fill',
   STROKE: 'Stroke',
   SHAPE: 'Shape',
@@ -81,8 +82,8 @@ const createPolygon = (polygon) => {
   lottiePolygon.position.y.value = polygon.originy;
   lottiePolygon.size.x.value = polygon.width;
   lottiePolygon.size.y.value = polygon.height;
-  lottiePolygon.points.value = polygon.points;
-  lottiePolygon.roundness.value = polygon.cornerRadius;
+  lottiePolygon.points.value = polygon.points ? polygon.points : 0;
+  lottiePolygon.roundness.value = polygon.cornerRadius ? polygon.cornerRadius : 0;
   completeShapeGroup(lottieShapeGroup, lottiePolygon);
   return lottieShapeGroup;
 };
@@ -91,6 +92,13 @@ const createStar = (star) => {
   const lottieShapeGroup = createPolygon(star);
   const lottieStar = lottieShapeGroup.getShapeAt(0);
   lottieStar.polygonType = LottieShapePolygon.polygonTypes.STAR;
+  return lottieShapeGroup;
+};
+
+const createTriangle = (triangle) => {
+  const lottieShapeGroup = createPolygon(triangle);
+  const lottieTriangle = lottieShapeGroup.getShapeAt(0);
+  lottieTriangle.points.value = 3;
   return lottieShapeGroup;
 };
 
@@ -153,6 +161,7 @@ const shapeCreators = {
   [shapeTypes.ELLIPSE]: createEllipse,
   [shapeTypes.POLYGON]: createPolygon,
   [shapeTypes.STAR]: createStar,
+  [shapeTypes.TRIANGLE]: createTriangle,
   [shapeTypes.POINTS_PATH]: createPointsPath,
   [shapeTypes.FILL]: fillFactory,
   [shapeTypes.STROKE]: strokeFactory,
@@ -166,6 +175,7 @@ const childrenShapes = [
   shapeTypes.POINTS_PATH,
   shapeTypes.POLYGON,
   shapeTypes.STAR,
+  shapeTypes.TRIANGLE,
 ];
 
 const childrenNodes = [

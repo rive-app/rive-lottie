@@ -18,7 +18,7 @@ class LottieShapePolygon extends LottieShapeContent {
     this._points = new LottieNumberProperty();
     this._roundness = new LottieNumberProperty();
 
-    this._starType = types.POLYGON;
+    this._polygonType = types.POLYGON;
   }
 
   set polygonType(val) {
@@ -123,7 +123,6 @@ class LottieShapePolygon extends LottieShapeContent {
         return this.flattenShape(riveData);
       }
     }
-
     let rootObject;
     const star = {
       ty: 'sr',

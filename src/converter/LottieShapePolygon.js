@@ -144,6 +144,9 @@ class LottieShapePolygon extends LottieShapeContent {
         return this.flattenShape(riveData);
       }
     }
+    if (this._roundness.animated || this._roundness.value[0] !== 0) {
+      return this.flattenShape(riveData);
+    }
     let rootObject;
     const star = {
       ty: 'sr',

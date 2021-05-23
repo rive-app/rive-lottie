@@ -1,3 +1,5 @@
+const { round } = require('../helpers/math');
+
 const drawPath = (flatPath) => {
   const path = {
     i: [],
@@ -10,10 +12,16 @@ const drawPath = (flatPath) => {
       path.i.push([0, 0]);
       path.o.push([0, 0]);
     } else {
-      path.i.push([flatPath.inX(j) - flatPath.x(j), flatPath.inY(j) - flatPath.y(j)]);
-      path.o.push([flatPath.outX(j) - flatPath.x(j), flatPath.outY(j) - flatPath.y(j)]);
+      path.i.push([
+        round(flatPath.inX(j) - flatPath.x(j)),
+        round(flatPath.inY(j) - flatPath.y(j)),
+      ]);
+      path.o.push([
+        round(flatPath.outX(j) - flatPath.x(j)),
+        round(flatPath.outY(j) - flatPath.y(j)),
+      ]);
     }
-    path.v.push([flatPath.x(j), flatPath.y(j)]);
+    path.v.push([round(flatPath.x(j)), round(flatPath.y(j))]);
   }
   return path;
 };
@@ -46,7 +54,7 @@ const flattenPaths = (rangeTimes, pathId, riveData) => {
       const flatPath = riveArtboard.flattenPath(pathId, true);
       const path = drawPath(flatPath);
       keyframes.push({
-        t: i,
+        t: round(i),
         o: { x: 0, y: 0 },
         i: { x: 1, y: 1 },
         s: [path],

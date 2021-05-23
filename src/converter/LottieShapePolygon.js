@@ -73,24 +73,6 @@ class LottieShapePolygon extends LottieShapeContent {
     return flattenPaths(rangeTimes, id, riveData);
   }
 
-  buildDefaultProps() {
-    return {
-      ty: 'sr',
-      or: {
-        a: 0,
-        k: 1,
-      },
-      r: {
-        a: 0,
-        k: 0,
-      },
-      sy: 2,
-      d: 1,
-      pt: this._points.serialize(),
-      os: this._roundness.serialize(),
-    };
-  }
-
   serialize(riveData) {
     if (this._size.animated
       && !this._position.animated
@@ -137,7 +119,7 @@ class LottieShapePolygon extends LottieShapeContent {
     } else {
       star.or = {
         a: 0,
-        k: size[0] * 0.5,
+        k: size.k[0] * 0.5,
       };
       rootObject = star;
     }

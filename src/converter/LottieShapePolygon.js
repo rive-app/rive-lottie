@@ -111,8 +111,11 @@ class LottieShapePolygon extends LottieShapeContent {
       const lottieShapeGroup = new LottieShapeGroup();
       lottieShapeGroup.transform.hasPositionSeparate = false;
       lottieShapeGroup.transform.scale.value = [size.k[0] * 0.5 * 100, size.k[1] * 0.5 * 100];
-      lottieShapeGroup.transform.x.value = -size.k[0] * 0.5 * 0.5;
-      lottieShapeGroup.transform.y.value = -size.k[1] * 0.5 * 0.5;
+      lottieShapeGroup.transform.x.value = 0;
+      lottieShapeGroup.transform.y.value = 0;
+      // TODO: it looks like these values are wrong. Keeping them for now just in case.
+      // lottieShapeGroup.transform.x.value = -size.k[0] * 0.5 * 0.5;
+      // lottieShapeGroup.transform.y.value = -size.k[1] * 0.5 * 0.5;
       const serializedGroup = lottieShapeGroup.serialize();
       serializedGroup.it.unshift(star);
       rootObject = serializedGroup;

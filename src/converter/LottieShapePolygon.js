@@ -5,6 +5,11 @@ const LottieShapeGroup = require('./LottieShapeGroup');
 const rangeFinder = require('./helpers/rangeFinder');
 const flattenPaths = require('./flattener/flatten');
 
+const types = {
+  STAR: 'star',
+  POLYGON: 'polygon',
+};
+
 class LottieShapePolygon extends LottieShapeContent {
   constructor() {
     super();
@@ -12,6 +17,14 @@ class LottieShapePolygon extends LottieShapeContent {
     this._size = new LottieShapeSize();
     this._points = new LottieNumberProperty();
     this._roundness = new LottieNumberProperty();
+
+    this._starType = types.POLYGON;
+  }
+
+  set polygonType(val) {
+    if (Object.values(types).includes(val)) {
+      this._polygonType = val;
+    }
   }
 
   get position() {
@@ -73,6 +86,22 @@ class LottieShapePolygon extends LottieShapeContent {
     return flattenPaths(rangeTimes, id, riveData);
   }
 
+  completeInnerRadius() {
+    if (this.type === types.STAR) {
+      return {
+        ir: {
+          a: 0,
+          k: this._size.x.value * 0.5,
+        },
+        is: {
+          a: 0,
+          k: 0,
+        },
+      };
+    }
+    return null;
+  }
+
   serialize(riveData) {
     if (this._size.animated
       && !this._position.animated
@@ -85,6 +114,16 @@ class LottieShapePolygon extends LottieShapeContent {
     if (this._position.animated) {
       return this.flattenShape(riveData);
     }
+    // Since the Inner Radius of a STAR is percentage based, the shape needs to be flattened
+    if (this._polygonType === types.STAR) {
+      if (this._size.animated) {
+        return this.flattenShape(riveData);
+      }
+      if (this._size.x.value !== this._size.y.value) {
+        return this.flattenShape(riveData);
+      }
+    }
+
     let rootObject;
     const star = {
       ty: 'sr',
@@ -97,10 +136,11 @@ class LottieShapePolygon extends LottieShapeContent {
         a: 0,
         k: 0,
       },
-      sy: 2,
+      sy: this._polygonType === types.POLYGON ? 2 : 1,
       d: 1,
       pt: this._points.serialize(),
       os: this._roundness.serialize(),
+      ...this.completeInnerRadius(),
     };
     const size = this._size.serialize();
     if (size.k[0] !== size.k[1]) {
@@ -128,50 +168,8 @@ class LottieShapePolygon extends LottieShapeContent {
     }
     return rootObject;
   }
-
-  _serialize() {
-    let rootObject;
-    const star = {
-      ty: 'sr',
-      p: this._position.serialize(),
-      or: {
-        a: 0,
-        k: 1,
-      },
-      r: {
-        a: 0,
-        k: 0,
-      },
-      sy: 2,
-      d: 1,
-      pt: this._points.serialize(),
-      os: this._roundness.serialize(),
-    };
-    const size = this._size.serialize();
-    if (size.a === 1) {
-      // TODO: could skip flattening if size width and height have same keyframes
-    } else if (size.k[0] !== size.k[1]) {
-      star.or = {
-        a: 0,
-        k: 1,
-      };
-      const lottieShapeGroup = new LottieShapeGroup();
-      lottieShapeGroup.transform.hasPositionSeparate = false;
-      lottieShapeGroup.transform.scale.value = [size.k[0] * 0.5 * 100, size.k[1] * 0.5 * 100];
-      lottieShapeGroup.transform.x.value = -size.k[0] * 0.5 * 0.5;
-      lottieShapeGroup.transform.y.value = -size.k[1] * 0.5 * 0.5;
-      const serializedGroup = lottieShapeGroup.serialize();
-      serializedGroup.it.unshift(star);
-      rootObject = serializedGroup;
-    } else {
-      star.or = {
-        a: 0,
-        k: size[0] * 0.5,
-      };
-      rootObject = star;
-    }
-    return rootObject;
-  }
 }
+
+LottieShapePolygon.polygonTypes = types;
 
 module.exports = LottieShapePolygon;

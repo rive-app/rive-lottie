@@ -29,6 +29,10 @@ const lottiePaintTypes = {
   GRADIENT_STROKE: 'LottieGradientStroke',
 };
 
+const lottieModifiers = {
+  TRIM_PATH: 'LottieShapeTrimPath',
+};
+
 const createShapeGroup = () => {
   const shapeGroup = Object.seal(new LottieShapeGroup());
   shapeGroup.transform.hasPositionSeparate = false;
@@ -203,7 +207,12 @@ const iterateChildren = (children, lottieGroup) => {
       shapeChild
         .filter((shape) => shape)
         .forEach((shape) => {
-          const lastIndex = lottieGroup.getLastIndexType(Object.values(lottiePaintTypes));
+          const lastIndex = lottieGroup.getLastIndexType(
+            [
+              ...Object.values(lottiePaintTypes),
+              ...Object.values(lottieModifiers),
+            ],
+          );
           lottieGroup.addShapeAt(shape, lastIndex);
         });
     }
@@ -211,6 +220,7 @@ const iterateChildren = (children, lottieGroup) => {
   });
 };
 
+// Looks for painting operations on shapes belonging to a group
 const groupHasPaint = (group) => {
   const { shapes } = group;
   if (shapes) {
@@ -224,6 +234,7 @@ const groupHasPaint = (group) => {
   return false;
 };
 
+// Searches the closest parent group that has a painting operation applied to it
 const getLastShapePaint = (_shape) => {
   let shape = _shape;
   while (shape.parent) {
@@ -235,9 +246,13 @@ const getLastShapePaint = (_shape) => {
   return null;
 };
 
+// This method traverses a lottieShape and children and splits tree into multiple branches
+// when there is a painting operation nested inside another painting operation
 const splitPaints = (lottieShape) => {
   let newPaint = false;
   const lastShapePaint = getLastShapePaint(lottieShape);
+  // If the group has a paint operation and there is a paint operation upwards
+  // it will split the tree at the parent paint operation (lastShapePaint)
   if (groupHasPaint(lottieShape) && lastShapePaint) {
     const parenting = [lottieShape];
     let found = false;
@@ -279,6 +294,76 @@ const splitPaints = (lottieShape) => {
   return newPaint;
 };
 
+// Looks for trim paths indexes on shapes belonging to a group
+const searchTrimPathsIndexes = (group) => {
+  const { shapes } = group;
+  if (shapes) {
+    const indexes = shapes
+      .map((shape, index) => (Object.values(lottieModifiers).includes(shape.type) ? index : -1))
+      .filter((index) => index !== -1);
+    return indexes;
+  }
+  return [];
+};
+
+// Looks for trim paths indexes on shapes belonging to a group
+const searchPaintIndexes = (group) => {
+  const { shapes } = group;
+  if (shapes) {
+    const indexes = shapes
+      .map((shape, index) => (Object.values(lottiePaintTypes).includes(shape.type) ? index : -1))
+      .filter((index) => index !== -1);
+    return indexes;
+  }
+  return [];
+};
+
+const getNonPaintShapes = (group) => {
+  const { shapes } = group;
+  if (shapes) {
+    const paintShapeTypes = [
+      ...Object.values(lottiePaintTypes),
+      ...Object.values(lottieModifiers),
+    ];
+    return shapes
+      .filter((shape) => !paintShapeTypes.includes(shape.type));
+  }
+  return [];
+};
+
+// Search for trim path operations and split the tree
+// to avoid a trim path affecting fills or other trim paths
+const splitTrimPaths = (lottieShape) => {
+  const trimPathIndexes = searchTrimPathsIndexes(lottieShape);
+  if (trimPathIndexes.length) {
+    const paintIndexes = searchPaintIndexes(lottieShape);
+    const nonPaintShapes = getNonPaintShapes(lottieShape);
+    const { shapes } = lottieShape;
+    lottieShape.clearShapes();
+    let i = 0;
+    while (i < paintIndexes.length) {
+      const lottieGroup = createShapeGroup();
+      lottieGroup.addShapes(nonPaintShapes);
+      lottieGroup.addShape(shapes[paintIndexes[i]]);
+      if (trimPathIndexes.includes(paintIndexes[i] - 1)) {
+        lottieGroup.addShape(shapes[paintIndexes[i] - 1]);
+      }
+      lottieShape.addShape(lottieGroup);
+      i += 1;
+    }
+  } else {
+    const { shapes } = lottieShape;
+    if (shapes) {
+      let i = 0;
+      while (i < shapes.length) {
+        const shape = shapes[i];
+        splitTrimPaths(shape);
+        i += 1;
+      }
+    }
+  }
+};
+
 const shapeFactory = (shape, parentId) => {
   const lottieShape = new LottieShape(shape.id);
   lottieShape.parentId = parentId;
@@ -288,6 +373,7 @@ const shapeFactory = (shape, parentId) => {
   layerProperties(lottieShape, shape);
   iterateChildren(shape.children, lottieGroup);
   splitPaints(lottieShape);
+  splitTrimPaths(lottieShape);
   return [lottieShape];
 };
 

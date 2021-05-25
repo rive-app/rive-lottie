@@ -46,6 +46,10 @@ class LottieShapeGroup extends LottieShapeContent {
     this._shapes.push(shape);
   }
 
+  addShapes(shapes) {
+    shapes.forEach((shape) => this.addShape(shape));
+  }
+
   addShapeAt(shape, index) {
     // eslint-disable-next-line no-param-reassign
     shape.parent = this;
@@ -58,6 +62,10 @@ class LottieShapeGroup extends LottieShapeContent {
 
   removeShapeAt(index) {
     this._shapes.splice(index, 1);
+  }
+
+  clearShapes() {
+    this._shapes = [];
   }
 
   getLastIndexType(types) {
@@ -86,8 +94,6 @@ class LottieShapeGroup extends LottieShapeContent {
 
   flattenUnexportableShapes(riveArtboard, riveAnimation) {
     this._shapes.forEach((shape) => {
-      // console.log(flattennableShapes);
-      console.log(shape.type);
       if (flattennableShapes.includes(shape.type)) {
         shape.flattenUnexportableShapes(riveArtboard, riveAnimation);
       }

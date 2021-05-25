@@ -87,6 +87,7 @@ class LottieShapeRectangle extends LottieShapeContent {
       p: this.calculatePosition(),
       s: this._size.serialize(),
       r: this._roundness.serialize(),
+      d: 2,
     };
   }
 }

@@ -9,6 +9,10 @@ const toHundred = (value) => {
 };
 const identity = (value) => value;
 
+const hundredToDegs = (value) => (value * 360) / 100;
+
+const toDegs = (value) => (value * 360);
+
 const round = (number, decimals = 3) => Math.round(number * 10 ** decimals) / (10 ** decimals);
 
 module.exports = {
@@ -16,4 +20,6 @@ module.exports = {
   toHundred,
   identity,
   round,
+  hundredToDegs,
+  toDegs,
 };

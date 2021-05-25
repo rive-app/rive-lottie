@@ -162,6 +162,21 @@ const handleStarInnerRadius = (keyframes, lottieObject) => {
   iterateRegularProperty(lottieProperty, keyframes, math.identity);
 };
 
+const handleTrimPathOffset = (keyframes, lottieObject) => {
+  const lottieProperty = lottieObject.offset;
+  iterateRegularProperty(lottieProperty, keyframes, math.toDegs);
+};
+
+const handleTrimPathStart = (keyframes, lottieObject) => {
+  const lottieProperty = lottieObject.start;
+  iterateRegularProperty(lottieProperty, keyframes, math.toHundred);
+};
+
+const handleTrimPathEnd = (keyframes, lottieObject) => {
+  const lottieProperty = lottieObject.end;
+  iterateRegularProperty(lottieProperty, keyframes, math.toHundred);
+};
+
 const handleOpacity = (keyframes, lottieObject) => {
   const lottieProperty = lottieObject.transform.opacity;
   iterateRegularProperty(lottieProperty, keyframes, math.toHundred);
@@ -199,6 +214,12 @@ const setAnimatedProperties = (properties, objectId, lottie) => {
       handleShapeOrigin(keyframes, lottieObject, animatedProperty.propertyKey);
     } else if (animatedProperty.propertyKey === 127) {
       handleStarInnerRadius(keyframes, lottieObject);
+    } else if (animatedProperty.propertyKey === 116) {
+      handleTrimPathOffset(keyframes, lottieObject);
+    } else if (animatedProperty.propertyKey === 114) {
+      handleTrimPathStart(keyframes, lottieObject);
+    } else if (animatedProperty.propertyKey === 115) {
+      handleTrimPathEnd(keyframes, lottieObject);
     } else {
       // eslint-disable-next-line no-console
       console.log('propertyKey', animatedProperty.propertyKey);

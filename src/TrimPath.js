@@ -1,6 +1,18 @@
 const Component = require('./Component');
 
 class TrimPath extends Component {
+  get start() {
+    return this._start;
+  }
+
+  get end() {
+    return this._end;
+  }
+
+  get offset() {
+    return this._offset;
+  }
+
   _setStart(reader) {
     this._start = reader.readFloat32();
   }

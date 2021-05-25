@@ -3,6 +3,7 @@ const { rgbaToVector } = require('../helpers/color');
 const LottieGradientStop = require('./LottieGradientStop');
 const math = require('./helpers/math');
 const LottieGradientStroke = require('./LottieGradientStroke');
+const LottieShapeTrimPath = require('./LottieShapeTrimPath');
 
 const lineCapMap = {
   0: 1,
@@ -19,6 +20,7 @@ const fillTypes = {
   SOLID_COLOR: 'SolidColor',
   LINEAR_GRADIENT: 'LinearGradient',
   RADIAL_GRADIENT: 'RadialGradient',
+  TRIM_PATH: 'TrimPath',
 };
 
 const createGradient = (gradient) => {
@@ -71,12 +73,22 @@ const createSolidColor = (solidColor, stroke) => {
   return lottieStroke;
 };
 
+const createTrimPath = (trimPath) => {
+  const lottieTrimPath = new LottieShapeTrimPath();
+  lottieTrimPath.start.value = math.toHundred(trimPath.start);
+  lottieTrimPath.end.value = math.toHundred(trimPath.end);
+  lottieTrimPath.offset.value = math.toDegs(trimPath.offset);
+  lottieTrimPath.id = trimPath.id;
+  return lottieTrimPath;
+};
+
 const createNone = () => null;
 
 const fillCreators = {
   [fillTypes.SOLID_COLOR]: createSolidColor,
   [fillTypes.LINEAR_GRADIENT]: createLinearGradient,
   [fillTypes.RADIAL_GRADIENT]: createRadialGradient,
+  [fillTypes.TRIM_PATH]: createTrimPath,
   [fillTypes.NONE]: createNone,
 };
 
@@ -84,7 +96,6 @@ const createStroke = (element, stroke) => {
   if (fillCreators[element.type]) {
     return fillCreators[element.type](element, stroke);
   }
-
   return createNone(element, stroke);
 };
 

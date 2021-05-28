@@ -1,6 +1,7 @@
 const LottieShapeContent = require('./LottieShapeContent');
 const LottieNumberProperty = require('./properties/LottieNumberProperty');
 const LottieShapeSize = require('./properties/LottieShapeSize');
+const LottieShapeGroup = require('./LottieShapeGroup');
 const rangeFinder = require('./helpers/rangeFinder');
 const flattenPaths = require('./flattener/flatten');
 
@@ -64,17 +65,30 @@ class LottieShapeRectangle extends LottieShapeContent {
     return flattenPaths(rangeTimes, id, riveData);
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  flipRectangle(rectangleData) {
+    // Nesting the rectangle inside a group to flip it horizontally so trim path
+    // works as expected. Could be skipped if no trim path is applied
+    const shapeGroup = Object.seal(new LottieShapeGroup());
+    shapeGroup.transform.hasPositionSeparate = false;
+    shapeGroup.transform.scale.value = [-100, 100];
+    const serializedGroup = shapeGroup.serialize();
+    serializedGroup.it.unshift(rectangleData);
+    return serializedGroup;
+  }
+
   serialize(riveData) {
     if (this._size.animated) {
       if (!this._position.animated
-        && this._position.x.value === 0.5
-        && this._position.y.value === 0.5) {
-        return {
+        && this._position.x.value[0] === 0.5
+        && this._position.y.value[0] === 0.5) {
+        return this.flipRectangle({
           ty: 'rc',
           p: { a: 0, k: [0, 0] },
           s: this._size.serialize(),
           r: this._roundness.serialize(),
-        };
+          d: 3,
+        });
       }
       return this.flattenShape(riveData);
     }
@@ -82,13 +96,13 @@ class LottieShapeRectangle extends LottieShapeContent {
     if (this._position.animated) {
       return this.flattenShape(riveData);
     }
-    return {
+    return this.flipRectangle({
       ty: 'rc',
       p: this.calculatePosition(),
       s: this._size.serialize(),
       r: this._roundness.serialize(),
-      d: 2,
-    };
+      d: 3,
+    });
   }
 }
 
